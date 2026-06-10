@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WareHouse Ambar Sistemi — Vizual İş Prinsipi</title>
+  <meta name="description" content="WareHouse ambar və inventar sisteminin sadə, vizual və interaktiv izahı. Stok necə hesablanır, mal necə daxil olur və çıxır." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Yuxarı oxuma progress bar -->
+  <div class="progress-bar" id="progressBar" aria-hidden="true"></div>
+
+  <!-- ============== STICKY NAVİQASİYA ============== -->
+  <nav class="site-nav" aria-label="Əsas naviqasiya">
+    <div class="container nav-inner">
+      <a class="nav-brand" href="#top">
+        <span class="brand-badge" aria-hidden="true">🏬</span>
+        WareHouse
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menyunu aç/bağla" aria-expanded="false" aria-controls="navList">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navList">
+        <li><a href="#mentiq">Ümumi məntiq</a></li>
+        <li><a href="#baslangic">Başlanğıc</a></li>
+        <li><a href="#alis">Alış</a></li>
+        <li><a href="#satis">Satış</a></li>
+        <li><a href="#transfer">Transfer</a></li>
+        <li><a href="#sayim">Sayım</a></li>
+        <li><a href="#simulyator">Simulyator</a></li>
+        <li><a href="#netice">Nəticə</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main id="top">
+
+    <!-- ============== 1. HERO ============== -->
+    <header class="hero" id="hero">
+      <div class="container">
+        <h1 class="hero-title">WareHouse Ambar Sistemi</h1>
+        <p class="hero-sub">Ambar və inventar proseslərinin sadə, vizual və anlaşılan izahı</p>
+        <p class="hero-lead">
+          Bu səhifə sistemin kodunu yox, <strong>iş prinsipini</strong> izah edir: məhsul necə yaradılır,
+          mal necə anbara daxil olur, necə satılır, necə transfer edilir və stok qalığı necə hesablanır.
+          Heç bir texniki bilik tələb olunmur — sadəcə oxu, klikləyə və yoxla.
+        </p>
+
+        <div class="hero-formula" aria-label="Əsas düstur">
+          <span class="tok eq">Mövcud stok</span>
+          <span class="tok op">=</span>
+          <span class="tok in">Anbara daxil olan mallar</span>
+          <span class="tok op">−</span>
+          <span class="tok out">Anbardan çıxan mallar</span>
+        </div>
+
+        <div class="grid hero-cards">
+          <article class="card stat-card">
+            <span class="emoji" aria-hidden="true">📦</span>
+            <h3>Məhsullar</h3>
+            <p>Sistemdə qeydə alınan bütün mallar və xidmətlər.</p>
+          </article>
+          <article class="card stat-card">
+            <span class="emoji" aria-hidden="true">🏬</span>
+            <h3>Anbarlar</h3>
+            <p>Malların fiziki olaraq saxlandığı yerlər.</p>
+          </article>
+          <article class="card stat-card">
+            <span class="emoji" aria-hidden="true">📊</span>
+            <h3>Stok</h3>
+            <p>Hər məhsulun hər anbarda qalan miqdarı.</p>
+          </article>
+          <article class="card stat-card">
+            <span class="emoji" aria-hidden="true">🔁</span>
+            <h3>Giriş / Çıxış</h3>
+            <p>Stoku dəyişən bütün hərəkət əməliyyatları.</p>
+          </article>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============== 2. SİSTEM NƏ ÜÇÜNDÜR ============== -->
+    <section class="section" id="sistem-nedir" aria-labelledby="h-sistem">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Giriş</span>
+          <h2 id="h-sistem">Sistem nə üçündür?</h2>
+        </div>
+        <div class="two-col">
+          <div class="lead-block">
+            <p>
+              WareHouse sistemi müəssisənin mallarını, anbarlarını, alışlarını, satışlarını,
+              transferlərini, sayımlarını və <strong>stok qalığını</strong> izləmək üçündür.
+            </p>
+            <p>
+              Əsas məqsəd sadədir: istənilən anda “hansı məhsuldan, hansı anbarda, nə qədər var?”
+              sualına dəqiq cavab vermək. Sistem bunu bütün giriş və çıxış əməliyyatlarını qeyd
+              edərək və onların nəticəsini cəmləyərək edir.
+            </p>
+          </div>
+          <ul class="check-list" aria-label="Sistemin funksiyaları">
+            <li><strong>Məhsulları saxlayır</strong> — bütün malların kataloqunu qurur.</li>
+            <li><strong>Anbarları idarə edir</strong> — hər anbarın ayrı qalığını izləyir.</li>
+            <li><strong>Alışı izləyir</strong> — təchizatçıdan gələn malı qeyd edir.</li>
+            <li><strong>Satışı izləyir</strong> — müştəriyə gedən malı qeyd edir.</li>
+            <li><strong>Stoku hesablayır</strong> — girişlərdən çıxışları çıxır.</li>
+            <li><strong>Hesabat verir</strong> — bütün hərəkətlərin nəticəsini göstərir.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== 3. ƏSAS ANLAYIŞLAR ============== -->
+    <section class="section" id="anlayislar" aria-labelledby="h-anlayislar">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Lüğət</span>
+          <h2 id="h-anlayislar">Əsas anlayışlar</h2>
+          <p>Sistemi başa düşmək üçün lazım olan 10 əsas termin — sadə dildə.</p>
+        </div>
+        <div class="grid grid-auto">
+          <article class="card"><span class="emoji">🏬</span><h3>Anbar</h3><p>Malların saxlandığı yerdir.</p><div class="example">Nümunə: Mərkəz Anbar</div></article>
+          <article class="card"><span class="emoji">📦</span><h3>Məhsul</h3><p>Alınan və satılan maldır.</p><div class="example">Nümunə: Monitor</div></article>
+          <article class="card"><span class="emoji">📊</span><h3>Stok</h3><p>Bir məhsulun bir anbarda qalan miqdarı.</p><div class="example">Nümunə: Mərkəzdə 40 ədəd</div></article>
+          <article class="card"><span class="emoji">🚚</span><h3>Təchizatçı</h3><p>Bizə mal satan tərəfdir.</p><div class="example">Nümunə: ABC MMC</div></article>
+          <article class="card"><span class="emoji">🛒</span><h3>Müştəri</h3><p>Bizdən mal alan tərəfdir.</p><div class="example">Nümunə: XYZ Market</div></article>
+          <article class="card"><span class="emoji">⬇️</span><h3>Alış</h3><p>Təchizatçıdan mal gətirmək.</p><div class="example">Nəticə: stok artır</div></article>
+          <article class="card"><span class="emoji">⬆️</span><h3>Satış</h3><p>Müştəriyə mal vermək.</p><div class="example">Nəticə: stok azalır</div></article>
+          <article class="card"><span class="emoji">↔️</span><h3>Transfer</h3><p>Bir anbardan digərinə mal köçürmək.</p><div class="example">Nümunə: Mərkəz → Filial</div></article>
+          <article class="card"><span class="emoji">🔢</span><h3>Sayım</h3><p>Fiziki malı sistemlə müqayisə etmək.</p><div class="example">Nümunə: 100 vs 95</div></article>
+          <article class="card"><span class="emoji">🗑️</span><h3>Zay mal</h3><p>Xarab olub silinən mal.</p><div class="example">Nəticə: stok azalır</div></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== 4. ÜMUMİ İŞ MƏNTİQİ ============== -->
+    <section class="section" id="mentiq" aria-labelledby="h-mentiq">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Əsas qayda</span>
+          <h2 id="h-mentiq">Sistemin ümumi iş məntiqi</h2>
+          <p>Bütün sistem bir sadə düsturun üzərində qurulub. Kartların üstünə gələndə qısa izah görünür.</p>
+        </div>
+
+        <div class="logic-formula" aria-label="Stok düsturu">
+          <span class="pill res">Mövcud stok</span>
+          <span class="sign">=</span>
+          <span class="pill in">Girişlər</span>
+          <span class="sign">−</span>
+          <span class="pill out">Çıxışlar</span>
+        </div>
+
+        <div class="logic-cols">
+          <div class="logic-panel in-panel">
+            <h3>⬇️ Girişlər <span style="color:var(--success)">(stok artır)</span></h3>
+            <div class="op-chip is-in" data-tip="Təchizatçıdan gələn mal anbara daxil olur və stoku artırır.">
+              <span class="badge">+</span> Mal qəbulu <span class="tooltip"></span>
+            </div>
+            <div class="op-chip is-in" data-tip="Müştəri malı geri qaytaranda mal yenidən anbara qayıdır.">
+              <span class="badge">+</span> Satışdan qaytarma <span class="tooltip"></span>
+            </div>
+            <div class="op-chip is-in" data-tip="Sistemdə görünməyən artıq mal tapılanda stok yuxarı düzəldilir.">
+              <span class="badge">+</span> Müsbət düzəliş <span class="tooltip"></span>
+            </div>
+            <div class="op-chip is-in" data-tip="Başqa anbardan gələn transfer bu anbarın stokunu artırır.">
+              <span class="badge">+</span> Transfer girişi <span class="tooltip"></span>
+            </div>
+            <div class="op-chip is-in" data-tip="Sayım zamanı fiziki mal sistemdəkindən çox çıxsa, stok artır.">
+              <span class="badge">+</span> Sayım artığı <span class="tooltip"></span>
+            </div>
+          </div>
+
+          <div class="logic-panel out-panel">
+            <h3>⬆️ Çıxışlar <span style="color:var(--danger)">(stok azalır)</span></h3>
+            <div class="op-chip is-out" data-tip="Müştəriyə çatdırılan mal anbardan çıxır və stoku azaldır.">
+              <span class="badge">−</span> Çatdırılma / satış çıxışı <span class="tooltip"></span>
+            </div>
+            <div class="op-chip is-out" data-tip="Problemli mal təchizatçıya qaytarılanda stokdan çıxır.">
+              <span class="badge">−</span> Alışdan qaytarma <span class="tooltip"></span>
+            </div>
+            <div class="op-chip is-out" data-tip="Fiziki olaraq əskik mal aşkarlananda stok aşağı düzəldilir.">
+              <span class="badge">−</span> Mənfi düzəliş <span class="tooltip"></span>
+            </div>
+            <div class="op-chip is-out" data-tip="Başqa anbara göndərilən mal bu anbarın stokunu azaldır.">
+              <span class="badge">−</span> Transfer çıxışı <span class="tooltip"></span>
+            </div>
+            <div class="op-chip is-out" data-tip="Xarab və yararsız mal silinəndə stokdan çıxarılır.">
+              <span class="badge">−</span> Zay silinmə <span class="tooltip"></span>
+            </div>
+            <div class="op-chip is-out" data-tip="Sayımda fiziki mal sistemdəkindən az çıxsa, stok azalır.">
+              <span class="badge">−</span> Sayım kəsiri <span class="tooltip"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== 5. SIFIRDAN BAŞLANĞIC ============== -->
+    <section class="section" id="baslangic" aria-labelledby="h-baslangic">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Quraşdırma</span>
+          <h2 id="h-baslangic">Sıfırdan başlanğıc ardıcıllığı</h2>
+          <p>Sistem boş başlayır. Hər addımı klikləyin — sağda ətraflı izahı açılacaq.</p>
+        </div>
+
+        <div class="stepper-wrap">
+          <ul class="steps" id="steps" role="tablist" aria-label="Başlanğıc addımları"></ul>
+          <div class="step-detail" id="stepDetail" role="tabpanel" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== 6. ANBAR VƏ MƏHSUL YARADILMASI ============== -->
+    <section class="section" id="yaratma" aria-labelledby="h-yaratma">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">İlk məlumatlar</span>
+          <h2 id="h-yaratma">Anbar və məhsul yaradılması</h2>
+        </div>
+        <div class="grid grid-2">
+          <div>
+            <h3>A) Anbar yaradılması</h3>
+            <p>Anbar — malların fiziki olaraq saxlandığı yerdir. Hər anbarın öz adı və qalığı olur.
+               Eyni məhsul bir neçə anbarda ayrı-ayrı miqdarda saxlana bilər.</p>
+            <div class="warehouse-list">
+              <div class="wh-row"><span class="wh-name">🏬 Mərkəz Anbar</span><span class="wh-qty">100 məhsul</span></div>
+              <div class="wh-row"><span class="wh-name">🏬 Filial Anbar</span><span class="wh-qty">25 məhsul</span></div>
+              <div class="wh-row"><span class="wh-name">🏬 Satış Anbarı</span><span class="wh-qty">10 məhsul</span></div>
+            </div>
+          </div>
+          <div>
+            <h3>B) Məhsul yaradılması</h3>
+            <p>Məhsul kartı malın adını, qrupunu, ölçü vahidini və qiymətini saxlayır.
+               “Fiziki məhsul” seçimi malın anbarda sayıla bilən olub-olmadığını göstərir.</p>
+            <div class="card product-card">
+              <div class="spec"><span>Məhsul adı</span><span>Monitor</span></div>
+              <div class="spec"><span>Məhsul qrupu</span><span>Elektronika</span></div>
+              <div class="spec"><span>Ölçü vahidi</span><span>Ədəd</span></div>
+              <div class="spec"><span>Qiymət</span><span>250 AZN</span></div>
+              <div class="spec"><span>Fiziki məhsul</span><span>Bəli</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="note-box info">
+          <span class="note-ico" aria-hidden="true">💡</span>
+          <p>Məhsul yaratmaq stok yaratmır. Stok yalnız mal hərəkəti (qəbul, satış, transfer və s.) olanda yaranır.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== 7. STOK NECƏ YARANIR ============== -->
+    <section class="section" id="stok-yaranir" aria-labelledby="h-stok-yaranir">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Canlı nümunə</span>
+          <h2 id="h-stok-yaranir">Stok necə yaranır?</h2>
+          <p>Stok rəqəmi yalnız əməliyyatlarla dəyişir. Düymələri sınayın — rəqəm canlı dəyişəcək.</p>
+        </div>
+        <div class="counter-stage">
+          <div class="counter-display">
+            <span class="clabel">Monitor · Mərkəz Anbar</span>
+            <div class="counter-value" id="counterValue">0</div>
+            <span class="clabel">cari stok (ədəd)</span>
+            <div class="btn-row" style="justify-content:center;margin-top:18px">
+              <button type="button" class="btn in"  data-counter="100">+100 Mal qəbulu</button>
+              <button type="button" class="btn out" data-counter="-20">−20 Satış</button>
+              <button type="button" class="btn out" data-counter="-5">−5 Zay silinmə</button>
+              <button type="button" class="btn ghost" id="counterReset">Sıfırla</button>
+            </div>
+          </div>
+          <div class="flow-mini" aria-hidden="true">
+            <div class="fm-step"><span>Məhsul yaradıldı</span><span class="res">Stok 0</span></div>
+            <div class="fm-step"><span>Mal qəbul edildi +100</span><span class="res" style="color:var(--success)">Stok 100</span></div>
+            <div class="fm-step"><span>Satış oldu −20</span><span class="res" style="color:var(--danger)">Stok 80</span></div>
+            <div class="fm-step"><span>Zay silindi −5</span><span class="res" style="color:var(--danger)">Stok 75</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== 8. ALIŞ PROSESİ ============== -->
+    <section class="section" id="alis" aria-labelledby="h-alis">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Giriş prosesi</span>
+          <h2 id="h-alis">Alış prosesi necə işləyir?</h2>
+          <p>Mal təchizatçıdan gəlir və anbara daxil olur. Hər kartı klikləyin — izahı açılır.</p>
+        </div>
+
+        <div class="flow" id="alisFlow">
+          <div class="flow-card">
+            <button type="button" class="fc-head"><span class="fc-num">1</span><span class="fc-title">Təchizatçı</span><span class="fc-toggle">▾</span></button>
+            <div class="fc-body"><p>Malı kimdən aldığımız sistemə yazılır. Məsələn: ABC MMC.</p></div>
+          </div>
+          <span class="flow-arrow" aria-hidden="true">→</span>
+          <div class="flow-card">
+            <button type="button" class="fc-head"><span class="fc-num">2</span><span class="fc-title">Alış sifarişi</span><span class="fc-toggle">▾</span></button>
+            <div class="fc-body"><p>Hansı malı, nə qədər və hansı qiymətə alacağımız planlanır. Bu hələ stoku dəyişmir.</p></div>
+          </div>
+          <span class="flow-arrow" aria-hidden="true">→</span>
+          <div class="flow-card">
+            <button type="button" class="fc-head"><span class="fc-num">3</span><span class="fc-title">Sifariş məhsulları</span><span class="fc-toggle">▾</span></button>
+            <div class="fc-body"><p>Sifarişə konkret məhsullar əlavə olunur: Monitor — 50 ədəd.</p></div>
+          </div>
+          <span class="flow-arrow" aria-hidden="true">→</span>
+          <div class="flow-card">
+            <button type="button" class="fc-head"><span class="fc-num">4</span><span class="fc-title">Mal qəbulu</span><span class="fc-toggle">▾</span></button>
+            <div class="fc-body"><p>Mal fiziki olaraq gəlir və qəbul edilir. Təsdiqlənəndə stok artır.</p></div>
+          </div>
+          <span class="flow-arrow" aria-hidden="true">→</span>
+          <div class="flow-result"><span>✓ Stok artır</span><small style="font-weight:600">Mərkəz Anbar +50</small></div>
+        </div>
+
+        <div class="example-box">
+          <div class="ex-grid">
+            <div class="ex-item"><span class="k">Təchizatçı</span><span class="v">ABC MMC</span></div>
+            <div class="ex-item"><span class="k">Məhsul</span><span class="v">Monitor</span></div>
+            <div class="ex-item"><span class="k">Alış miqdarı</span><span class="v">50 ədəd</span></div>
+          </div>
+          <div class="ex-res">Nəticə: Mərkəz Anbarda Monitor stoku 50 artır.</div>
+        </div>
+
+        <div class="note-box">
+          <span class="note-ico" aria-hidden="true">⚠️</span>
+          <p>Alış sifarişi yaratmaq stoku artırmır. Stok yalnız mal qəbulu təsdiqlənəndə artır.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== 9. SATIŞ PROSESİ ============== -->
+    <section class="section" id="satis" aria-labelledby="h-satis">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Çıxış prosesi</span>
+          <h2 id="h-satis">Satış prosesi necə işləyir?</h2>
+          <p>Mal müştəriyə gedir və anbardan çıxır. Hər kartı klikləyin — izahı açılır.</p>
+        </div>
+
+        <div class="flow" id="satisFlow">
+          <div class="flow-card">
+            <button type="button" class="fc-head"><span class="fc-num">1</span><span class="fc-title">Müştəri</span><span class="fc-toggle">▾</span></button>
+            <div class="fc-body"><p>Malı kimə satdığımız sistemə yazılır. Məsələn: XYZ Market.</p></div>
+          </div>
+          <span class="flow-arrow" aria-hidden="true">→</span>
+          <div class="flow-card">
+            <button type="button" class="fc-head"><span class="fc-num">2</span><span class="fc-title">Satış sifarişi</span><span class="fc-toggle">▾</span></button>
+            <div class="fc-body"><p>Hansı malı, nə qədər satacağımız planlanır. Bu hələ stoku azaltmır.</p></div>
+          </div>
+          <span class="flow-arrow" aria-hidden="true">→</span>
+          <div class="flow-card">
+            <button type="button" class="fc-head"><span class="fc-num">3</span><span class="fc-title">Sifariş məhsulları</span><span class="fc-toggle">▾</span></button>
+            <div class="fc-body"><p>Sifarişə məhsullar əlavə olunur: Monitor — 10 ədəd.</p></div>
+          </div>
+          <span class="flow-arrow" aria-hidden="true">→</span>
+          <div class="flow-card">
+            <button type="button" class="fc-head"><span class="fc-num">4</span><span class="fc-title">Çatdırılma</span><span class="fc-toggle">▾</span></button>
+            <div class="fc-body"><p>Mal anbardan çıxır və müştəriyə göndərilir. Təsdiqlənəndə stok azalır.</p></div>
+          </div>
+          <span class="flow-arrow" aria-hidden="true">→</span>
+          <div class="flow-result minus"><span>✓ Stok azalır</span><small style="font-weight:600">Mərkəz Anbar −10</small></div>
+        </div>
+
+        <div class="example-box">
+          <div class="ex-grid">
+            <div class="ex-item"><span class="k">Müştəri</span><span class="v">XYZ Market</span></div>
+            <div class="ex-item"><span class="k">Məhsul</span><span class="v">Monitor</span></div>
+            <div class="ex-item"><span class="k">Satış miqdarı</span><span class="v">10 ədəd</span></div>
+          </div>
+          <div class="ex-res minus">Nəticə: Mərkəz Anbarda Monitor stoku 10 azalır.</div>
+        </div>
+
+        <div class="note-box">
+          <span class="note-ico" aria-hidden="true">⚠️</span>
+          <p>Satış sifarişi yaratmaq hələ stoku azaltmır. Stok çatdırılma təsdiqlənəndə azalır.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== 10. SATIŞDAN QAYTARMA ============== -->
+    <section class="section" id="satis-qaytarma" aria-labelledby="h-sq">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Geri qaytarma</span>
+          <h2 id="h-sq">Satışdan qaytarma</h2>
+          <p>Müştəri malı geri qaytaranda mal yenidən anbara qayıdır və stok artır.</p>
+        </div>
+        <div class="chain">
+          <span class="node">Satış edildi</span><span class="arrow">→</span>
+          <span class="node">Müştəri malı qaytardı</span><span class="arrow">→</span>
+          <span class="node">Mal anbara qayıtdı</span><span class="arrow">→</span>
+          <span class="node in">Stok artır ↑</span>
+        </div>
+        <div class="example-box">
+          <p style="margin:0">10 ədəd monitor satılmışdı. Müştəri 2 ədədini qaytardı. <strong style="color:var(--success)">Stok 2 ədəd artır.</strong></p>
+        </div>
+        <div class="table-wrap" style="margin-top:18px;max-width:420px">
+          <table class="data cmp-table">
+            <tbody>
+              <tr><td>Satış</td><td class="out">Stok azalır</td></tr>
+              <tr><td>Satışdan qaytarma</td><td class="in">Stok artır</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== 11. ALIŞDAN QAYTARMA ============== -->
+    <section class="section" id="alis-qaytarma" aria-labelledby="h-aq">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Geri qaytarma</span>
+          <h2 id="h-aq">Alışdan qaytarma</h2>
+          <p>Təchizatçıdan gələn problemli malı geri göndərəndə stok azalır.</p>
+        </div>
+        <div class="chain">
+          <span class="node">Mal qəbul edildi</span><span class="arrow">→</span>
+          <span class="node">Problemli mal seçildi</span><span class="arrow">→</span>
+          <span class="node">Təchizatçıya qaytarıldı</span><span class="arrow">→</span>
+          <span class="node out">Stok azalır ↓</span>
+        </div>
+        <div class="example-box">
+          <p style="margin:0">50 ədəd monitor qəbul edildi. 5 ədədi problemli çıxdı və təchizatçıya qaytarıldı.
+            <strong style="color:var(--danger)">Stok 5 azalır.</strong></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== 12. TRANSFER PROSESİ ============== -->
+    <section class="section" id="transfer" aria-labelledby="h-transfer">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Anbarlar arası</span>
+          <h2 id="h-transfer">Anbarlar arası transfer necə işləyir?</h2>
+          <p>Mal bir anbardan çıxır, “yolda” olur və başqa anbara daxil olur. Aşağıda özünüz sınaya bilərsiniz.</p>
+        </div>
+
+        <div class="chain" style="justify-content:center">
+          <span class="node">Anbar A</span><span class="arrow">→</span>
+          <span class="node out">Transfer çıxışı</span><span class="arrow">→</span>
+          <span class="node">Yolda olan mal</span><span class="arrow">→</span>
+          <span class="node in">Transfer girişi</span><span class="arrow">→</span>
+          <span class="node">Anbar B</span>
+        </div>
+
+        <div class="sim-grid" style="margin-top:24px">
+          <div class="sim-controls">
+            <div class="field">
+              <label for="trFrom">Mərkəz Anbar stoku</label>
+              <input type="number" id="trFrom" value="100" min="0" />
+            </div>
+            <div class="field">
+              <label for="trTo">Filial Anbar stoku</label>
+              <input type="number" id="trTo" value="10" min="0" />
+            </div>
+            <div class="field">
+              <label for="trAmount">Transfer miqdarı</label>
+              <input type="number" id="trAmount" value="20" min="0" />
+            </div>
+            <button type="button" class="btn primary" id="trRun" style="width:100%">Transfer et</button>
+            <div class="sim-warning" id="trWarning">⚠️ Mənbə anbarda kifayət qədər stok yoxdur.</div>
+          </div>
+
+          <div class="warehouse-pair">
+            <div class="wh-box">
+              <div class="wh-ico" aria-hidden="true">🏬</div>
+              <div class="wh-title">Mərkəz Anbar</div>
+              <div class="wh-stock" id="trFromStock">100</div>
+              <div class="wh-unit">ədəd</div>
+            </div>
+            <div class="transfer-mid" aria-hidden="true">➡️</div>
+            <div class="wh-box">
+              <div class="wh-ico" aria-hidden="true">🏬</div>
+              <div class="wh-title">Filial Anbar</div>
+              <div class="wh-stock" id="trToStock">10</div>
+              <div class="wh-unit">ədəd</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== 13. MÜSBƏT VƏ MƏNFİ DÜZƏLİŞ ============== -->
+    <section class="section" id="duzelish" aria-labelledby="h-duzelish">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Manual korreksiya</span>
+          <h2 id="h-duzelish">Müsbət və mənfi düzəliş</h2>
+          <p>Bəzən fiziki mal sistemdəkindən fərqli olur. Düzəliş bu fərqi sistemə yazır.</p>
+        </div>
+        <div class="grid grid-2">
+          <div class="logic-panel in-panel">
+            <h3>➕ Müsbət düzəliş</h3>
+            <p style="color:#2c6e49">Artıq mal tapılanda istifadə olunur və stoku <strong>artırır</strong>.</p>
+            <p style="color:#2c6e49;margin:0"><strong>Nümunə:</strong> sistemdə 100, realda 105 → <strong>+5</strong></p>
+          </div>
+          <div class="logic-panel out-panel">
+            <h3>➖ Mənfi düzəliş</h3>
+            <p style="color:#9a4334">Əskik mal olanda istifadə olunur və stoku <strong>azaldır</strong>.</p>
+            <p style="color:#9a4334;margin:0"><strong>Nümunə:</strong> sistemdə 100, realda 97 → <strong>−3</strong></p>
+          </div>
+        </div>
+        <div class="table-wrap" style="margin-top:18px">
+          <table class="data cmp-table">
+            <thead><tr><th>Düzəliş növü</th><th>Vəziyyət</th><th>Nəticə</th></tr></thead>
+            <tbody>
+              <tr><td>Müsbət düzəliş</td><td>Real &gt; Sistem</td><td class="in">Stok artır</td></tr>
+              <tr><td>Mənfi düzəliş</td><td>Real &lt; Sistem</td><td class="out">Stok azalır</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== 14. STOK SAYIMI ============== -->
+    <section class="section" id="sayim" aria-labelledby="h-sayim">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">İnventarizasiya</span>
+          <h2 id="h-sayim">Stok sayımı</h2>
+          <p>Stok sayımı fiziki anbardakı real malların sistemdəki qalıqla müqayisəsidir.
+             Sistem fərqi avtomatik hesablayır.</p>
+        </div>
+
+        <div class="sim-grid">
+          <div class="sim-controls">
+            <div class="field">
+              <label for="scSys">Sistem qalığı</label>
+              <input type="number" id="scSys" value="100" min="0" />
+            </div>
+            <div class="field">
+              <label for="scCount">Fiziki sayım</label>
+              <input type="number" id="scCount" value="95" min="0" />
+            </div>
+            <button type="button" class="btn primary" id="scRun" style="width:100%">Fərqi hesabla</button>
+            <div class="result-box neutral" id="scResult">
+              Sistem qalığı və fiziki sayımı yazıb “Fərqi hesabla” düyməsinə basın.
+            </div>
+          </div>
+
+          <div>
+            <ol style="color:var(--ink-soft);line-height:2">
+              <li>Anbar seçilir</li>
+              <li>Məhsul seçilir</li>
+              <li>Sistem qalığı görünür</li>
+              <li>Fiziki sayılan miqdar yazılır</li>
+              <li>Sistem fərqi hesablayır</li>
+              <li>Fərq müsbətdirsə stok artır, mənfidirsə azalır, sıfırdırsa dəyişmir</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== 15. ZAY MALLARIN SİLİNMƏSİ ============== -->
+    <section class="section" id="zay" aria-labelledby="h-zay">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Scrapping</span>
+          <h2 id="h-zay">Zay malların silinməsi</h2>
+          <p>Xarab və yararsız mallar stokdan çıxarılır, amma hərəkət tarixçəsində iz qalır.</p>
+        </div>
+        <div class="chain">
+          <span class="node">Məhsul xarab oldu</span><span class="arrow">→</span>
+          <span class="node">Zay kimi qeyd edildi</span><span class="arrow">→</span>
+          <span class="node out">Stokdan çıxarıldı ↓</span><span class="arrow">→</span>
+          <span class="node">Hərəkət tarixçəsində qaldı</span>
+        </div>
+        <div class="note-box info">
+          <span class="note-ico" aria-hidden="true">📝</span>
+          <p>Bu adi silmə deyil. Sistem sonradan hansı məhsulun, hansı anbardan, hansı miqdarda silindiyini göstərə bilir.</p>
+        </div>
+        <div class="example-box">
+          <p style="margin:0">10 ədəd məhsul zədələndi. Scrapping əməliyyatı edildi.
+            <strong style="color:var(--danger)">Stok 10 azaldı.</strong></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== 16. HESABATLAR ============== -->
+    <section class="section" id="hesabatlar" aria-labelledby="h-hesabatlar">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Görünərlik</span>
+          <h2 id="h-hesabatlar">Hesabatlar</h2>
+          <p>Hesabatlar bütün hərəkətlərin nəticəsini fərqli baxış bucaqlarından göstərir.</p>
+        </div>
+        <div class="grid grid-3">
+          <article class="card report-card">
+            <h3>📊 Dashboard</h3>
+            <div class="qa"><span class="q">Ümumi vəziyyət necədir?</span>
+              <div class="who">İstifadə: rəhbərlik · Ümumi satış, alış və stok göstəriciləri.</div></div>
+          </article>
+          <article class="card report-card">
+            <h3>📦 Stok hesabatı</h3>
+            <div class="qa"><span class="q">Hansı məhsuldan hansı anbarda nə qədər var?</span>
+              <div class="who">İstifadə: anbar müdiri · Cari qalıqlar.</div></div>
+          </article>
+          <article class="card report-card">
+            <h3>🔁 Hərəkət hesabatı</h3>
+            <div class="qa"><span class="q">Bu məhsul hansı əməliyyatlarla daxil olub və çıxıb?</span>
+              <div class="who">İstifadə: anbar / audit · Giriş-çıxış tarixçəsi.</div></div>
+          </article>
+          <article class="card report-card">
+            <h3>🛒 Satış hesabatı</h3>
+            <div class="qa"><span class="q">Nə qədər və kimə satılıb?</span>
+              <div class="who">İstifadə: satış şöbəsi · Müştəri və məbləğ üzrə.</div></div>
+          </article>
+          <article class="card report-card">
+            <h3>🚚 Alış hesabatı</h3>
+            <div class="qa"><span class="q">Nə qədər və kimdən alınıb?</span>
+              <div class="who">İstifadə: təchizat şöbəsi · Təchizatçı üzrə.</div></div>
+          </article>
+          <article class="card report-card">
+            <h3>🧾 Transaction hesabatı</h3>
+            <div class="qa"><span class="q">Bütün əməliyyatların tam siyahısı nədir?</span>
+              <div class="who">İstifadə: audit · Bütün giriş-çıxış qeydləri.</div></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== 17. İSTİFADƏÇİ ROLLARI ============== -->
+    <section class="section" id="rollar" aria-labelledby="h-rollar">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">İcazələr</span>
+          <h2 id="h-rollar">İstifadəçi rolları</h2>
+          <p>Rol istifadəçinin sistemdə nəyi görə və nəyi edə biləcəyini müəyyən edir.</p>
+        </div>
+        <div class="grid grid-auto">
+          <article class="card role-card">
+            <div class="role-head"><span class="role-ico">🛒</span><h3>Sales</h3></div>
+            <ul><li>Müştəri idarə edir</li><li>Satış sifarişi yaradır</li><li>Satış hesabatına baxır</li></ul>
+          </article>
+          <article class="card role-card">
+            <div class="role-head"><span class="role-ico">🚚</span><h3>Purchase</h3></div>
+            <ul><li>Təchizatçı idarə edir</li><li>Alış sifarişi yaradır</li><li>Alış hesabatına baxır</li></ul>
+          </article>
+          <article class="card role-card">
+            <div class="role-head"><span class="role-ico">📦</span><h3>Inventory</h3></div>
+            <ul><li>Anbar və məhsulları idarə edir</li><li>Bütün hərəkət modullarını işlədir</li><li>Stok hesabatlarına baxır</li></ul>
+          </article>
+          <article class="card role-card">
+            <div class="role-head"><span class="role-ico">👥</span><h3>Membership</h3></div>
+            <ul><li>İstifadəçi yaradır/silir</li><li>Rol təyin edir</li><li>Yalnız admin üçün</li></ul>
+          </article>
+          <article class="card role-card">
+            <div class="role-head"><span class="role-ico">⚙️</span><h3>Settings</h3></div>
+            <ul><li>Şirkət məlumatları</li><li>Vergi dərəcələri</li><li>Nömrə seriyaları</li></ul>
+          </article>
+          <article class="card role-card">
+            <div class="role-head"><span class="role-ico">🪪</span><h3>Profiles</h3></div>
+            <ul><li>Öz profilini idarə edir</li><li>Şifrəni dəyişir</li><li>Hər istifadəçidə var</li></ul>
+          </article>
+          <article class="card role-card">
+            <div class="role-head"><span class="role-ico">📊</span><h3>Dashboards</h3></div>
+            <ul><li>Ümumi statistikaya baxır</li><li>Kart və qrafiklər</li><li>Yalnız görüntü</li></ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== 18. BİR MƏHSULUN TAM HƏYAT YOLU ============== -->
+    <section class="section" id="heyat-yolu" aria-labelledby="h-heyat">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Tam ssenari</span>
+          <h2 id="h-heyat">Bir məhsulun tam həyat yolu</h2>
+          <p>Bir Monitor məhsulunun yaranmasından son qalığına qədər bütün yolu — addım-addım.</p>
+        </div>
+
+        <div class="life-timeline">
+          <div class="life-item"><div class="life-dot">1</div><div class="life-body"><div class="lt">Monitor məhsulu yaradıldı</div><div class="ls">Hələ heç bir hərəkət yoxdur — <span class="lstock">stok 0</span></div></div></div>
+          <div class="life-item"><div class="life-dot">2</div><div class="life-body"><div class="lt">50 ədəd qəbul edildi</div><div class="ls">Mərkəz Anbara giriş — <span class="lstock">Mərkəz 50</span></div></div></div>
+          <div class="life-item"><div class="life-dot">3</div><div class="life-body"><div class="lt">10 ədəd satıldı</div><div class="ls">Mərkəz Anbardan çıxış — <span class="lstock">Mərkəz 40</span></div></div></div>
+          <div class="life-item"><div class="life-dot">4</div><div class="life-body"><div class="lt">5 ədəd filial anbara transfer edildi</div><div class="ls">Mərkəzdən Filiala — <span class="lstock">Mərkəz 35, Filial 5</span></div></div></div>
+          <div class="life-item"><div class="life-dot">5</div><div class="life-body"><div class="lt">Filialda 1 ədəd zay silindi</div><div class="ls">Filialdan çıxış — <span class="lstock">Filial 4</span></div></div></div>
+          <div class="life-item"><div class="life-dot">6</div><div class="life-body"><div class="lt">Sayımda Mərkəzdə 1 ədəd əskik çıxdı</div><div class="ls">Mənfi fərq — <span class="lstock">Mərkəz 34</span></div></div></div>
+          <div class="life-item"><div class="life-dot">✓</div><div class="life-body"><div class="lt">Yekun qalıq</div><div class="ls"><span class="lstock">Mərkəz 34, Filial 4</span></div></div></div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th>Addım</th><th>Əməliyyat</th><th>Mərkəz Anbar</th><th>Filial Anbar</th></tr></thead>
+            <tbody>
+              <tr><td class="num">1</td><td>Məhsul yaradıldı</td><td class="num">0</td><td class="num">0</td></tr>
+              <tr><td class="num">2</td><td>50 ədəd qəbul edildi</td><td class="num">50</td><td class="num">0</td></tr>
+              <tr><td class="num">3</td><td>10 ədəd satıldı</td><td class="num">40</td><td class="num">0</td></tr>
+              <tr><td class="num">4</td><td>5 ədəd transfer edildi</td><td class="num">35</td><td class="num">5</td></tr>
+              <tr><td class="num">5</td><td>Filialda 1 zay silindi</td><td class="num">35</td><td class="num">4</td></tr>
+              <tr><td class="num">6</td><td>Sayımda 1 əskik çıxdı</td><td class="num">34</td><td class="num">4</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== 19. İNTERAKTİV STOK SİMULYATORU ============== -->
+    <section class="section" id="simulyator" aria-labelledby="h-sim">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Özün yoxla</span>
+          <h2 id="h-sim">Stok necə dəyişir? Özün yoxla</h2>
+          <p>Aşağıdakı düymələrlə əməliyyatlar edin. Hər əməliyyat stoku dəyişir və tarixçəyə yazılır.</p>
+        </div>
+
+        <div class="main-sim">
+          <div class="sim-panel">
+            <div class="sim-meta"><strong>Monitor</strong> · Mərkəz Anbar</div>
+            <div class="sim-stock" id="simStock">0</div>
+            <div class="sim-meta" style="margin-bottom:16px">cari stok (ədəd)</div>
+            <div class="sim-buttons">
+              <button type="button" class="btn in"  data-op="Mal qəbulu"       data-amount="50">+50 Mal qəbulu</button>
+              <button type="button" class="btn out" data-op="Satış"            data-amount="-10">−10 Satış</button>
+              <button type="button" class="btn in"  data-op="Satışdan qaytarma" data-amount="2">+2 Satış qaytarma</button>
+              <button type="button" class="btn out" data-op="Alışdan qaytarma"  data-amount="-5">−5 Alış qaytarma</button>
+              <button type="button" class="btn in"  data-op="Müsbət düzəliş"    data-amount="5">+5 Müsbət düzəliş</button>
+              <button type="button" class="btn out" data-op="Mənfi düzəliş"     data-amount="-3">−3 Mənfi düzəliş</button>
+              <button type="button" class="btn out" data-op="Zay silinmə"       data-amount="-2">−2 Zay silinmə</button>
+              <button type="button" class="btn ghost full" id="simReset">Sıfırla</button>
+            </div>
+            <div class="sim-warning" id="simWarning">
+              ⚠️ Diqqət: stok mənfiyə düşdü. Real sistemdə bu hal əlavə yoxlama tələb edə bilər.
+            </div>
+          </div>
+
+          <div class="history">
+            <h3>Əməliyyat tarixçəsi</h3>
+            <ul class="history-list" id="historyList">
+              <li class="history-empty">Hələ əməliyyat yoxdur. Soldakı düymələrdən birinə basın.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== 20. QISA NƏTİCƏ ============== -->
+    <section class="section" id="netice" aria-labelledby="h-netice">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Yekun</span>
+          <h2 id="h-netice">Qısa nəticə</h2>
+        </div>
+        <div class="conclusion-card">
+          <p>
+            Bu sistemin əsas məntiqi ondan ibarətdir ki, məhsullar anbarlarda saxlanılır,
+            bütün giriş və çıxış əməliyyatları qeyd olunur və sistem bu əməliyyatların cəminə görə
+            hər məhsulun hər anbarda qalan miqdarını hesablayır.
+          </p>
+        </div>
+        <div class="grid memory-grid">
+          <article class="card memory-card"><div class="mnum">1</div><p>Məhsul yaratmaq stok yaratmır.</p></article>
+          <article class="card memory-card"><div class="mnum">2</div><p>Stok yalnız giriş və çıxış əməliyyatları ilə dəyişir.</p></article>
+          <article class="card memory-card"><div class="mnum">3</div><p>Təsdiqlənmiş əməliyyatlar stokda görünür.</p></article>
+          <article class="card memory-card"><div class="mnum">4</div><p>Hesabatlar bütün hərəkətlərin nəticəsini göstərir.</p></article>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>WareHouse Ambar Sistemi — Vizual İş Prinsipi · Proseslərin sadə və interaktiv izahı.</p>
+    </div>
+  </footer>
+
+  <button class="back-to-top" id="backToTop" aria-label="Yuxarı qayıt" title="Yuxarı qayıt">↑</button>
+
+  <script src="script.js"></script>
+</body>
+</html>
